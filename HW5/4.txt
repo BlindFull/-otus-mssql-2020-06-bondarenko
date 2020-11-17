@@ -1,0 +1,29 @@
+Написать рекурсивный CTE sql запрос и заполнить им временную таблицу и табличную переменную
+
+;with recurse(employeeid, [name], title, employeelevel, managerid)
+as
+(
+	select
+		m.employeeid as id,
+		(select m.firstname + ' ' + m.Lastname) as [name],
+		m.title as title,
+		1 as employelevel,
+		m.managerid
+	from dbo.MyEmployees m
+	where m.ManagerID is null
+	union all
+	select
+		m.employeeid as id,
+		(select m.firstname + ' ' + m.lastname) as [name],
+		m.title as title,
+		(select rc.employeelevel + 1) as employelevel,
+		m.managerid
+	from dbo.myemployees m
+	join recurse rc on rc.employeeid = m.managerid
+)
+select
+	rm.employeeid,
+	cast(replicate(' | ', rm.employeelevel - 1) + rm.[name] as varchar(100)) as [name],
+	rm.title,
+	rm.employeelevel
+from recurse rm

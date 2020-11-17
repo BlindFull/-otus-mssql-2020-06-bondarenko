@@ -1,0 +1,7 @@
+--Поставщиков (Suppliers), у которых не было сделано ни одного заказа (PurchaseOrders).
+--Сделать через JOIN, с подзапросом задание принято не будет.
+--Вывести: ИД поставщика, наименование поставщика.
+
+select top 10 t1.SupplierID, t1.SupplierName from Purchasing.Suppliers t1 
+left join  Purchasing.PurchaseOrders t2  on t1.SupplierID = t2.SupplierID
+where t2.PurchaseOrderID is null

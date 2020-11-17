@@ -1,0 +1,15 @@
+--Посчитать среднюю цену товара, общую сумму продажи по месяцам
+--Вывести:
+--* Год продажи
+--* Месяц продажи
+--* Средняя цена за месяц по всем товарам
+--* Общая сумма продаж
+
+select datepart(yy,(i.InvoiceDate)) as 'year',
+	   datename(month, i.InvoiceDate) as 'month',
+	   avg(l.UnitPrice) as 'average price',
+	   sum(l.UnitPrice) as 'total sales'
+from Sales.Invoices as i
+join Sales.InvoiceLines as l on i.InvoiceID = l.InvoiceID
+group by datepart(yy, i.InvoiceDate), datename(month, i.InvoiceDate)
+order by datepart(yy, i.InvoiceDate), datename(month, i.InvoiceDate)

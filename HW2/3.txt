@@ -1,0 +1,23 @@
+-- Заказы (Orders) с ценой товара более 100$ либо количеством единиц товара более 20 штук и присутствующей датой комплектации всего заказа (PickingCompletedWhen).
+--Вывести:
+--* OrderID
+--* дату заказа в формате ДД.ММ.ГГГГ
+--* название месяца, в котором была продажа
+--* номер квартала, к которому относится продажа
+--* треть года, к которой относится дата продажи (каждая треть по 4 месяца)
+--* имя заказчика (Customer)
+--Добавьте вариант этого запроса с постраничной выборкой, пропустив первую 1000 и отобразив следующие 100 записей. 
+--Сортировка должна быть по номеру квартала, трети года, дате заказа (везде по возрастанию).
+
+select o.OrderID , 
+       convert( varchar(16), orderdate, 104) as DATEORDER,
+       datename( month, orderdate) as month , 
+       datepart( qq, orderdate ) as Quarter,
+       ceiling (convert(float, month(orderdate))/4) as ThirdYear,
+       c.CustomerName
+from  Sales.Orders as o  
+join  Sales.OrderLines as  l  on o.OrderId = l.OrderID
+join   Sales.Customers as c  on c.CustomerID = o.CustomerID
+where (UnitPrice > 100  or Quantity > 20 ) and o.PickingCompletedWhen is not null
+order by ThirdYear,  Quarter, DATEORDER
+offset 1000 rows fetch next 100 rows only

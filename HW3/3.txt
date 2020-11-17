@@ -1,0 +1,25 @@
+--Выберите информацию по клиентам, которые перевели компании пять максимальных платежей из Sales.CustomerTransactions. Представьте несколько способов (в том числе с CTE).
+
+select s.CustomerID,
+       s.CustomerName,
+	   t.TransactionAmount
+from [Sales].[Customers] as s
+	join (select top 5(CustomerID),
+		          TransactionAmount             
+		  from [Sales].[CustomerTransactions]
+		  order by TransactionAmount desc) as t
+	on s.CustomerID = t. CustomerID ;
+
+		
+with Transactioncte as 
+(select top 5(CustomerID) ,
+		    transactionAmount             
+from [Sales].[CustomerTransactions]
+order by TransactionAmount desc )		  		   
+select s.CustomerID,
+       s.CustomerName,
+	   t.TransactionAmount
+from [Sales].[Customers] as s
+join Transactioncte as t
+ on s.CustomerID = t. CustomerID 
+ order by t.TransactionAmount

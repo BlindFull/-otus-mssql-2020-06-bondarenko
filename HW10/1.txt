@@ -1,0 +1,10 @@
+CREATE PROCEDURE ms
+AS
+	BEGIN
+		SELECT c.CustomerID, c.CustomerName, ct.TransactionAmount
+		FROM Sales.CustomerTransactions ct
+		JOIN Sales.Customers c on c.CustomerID = ct.CustomerID
+		WHERE ct.TransactionAmount = (SELECT MAX(TransactionAmount) from Sales.CustomerTransactions)
+	END
+
+EXEC ms

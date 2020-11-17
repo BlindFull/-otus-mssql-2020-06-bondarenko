@@ -1,0 +1,25 @@
+set statistics time on;
+
+select distinct i.InvoiceID,c.CustomerName,i.InvoiceDate,(sum(ct.TransactionAmount) over(order by month(InvoiceDate))) as Progressive_Total
+from Sales.Invoices i
+join Sales.CustomerTransactions ct on i.InvoiceID = ct.InvoiceID
+join Sales.Customers c on i.CustomerID = c.CustomerID
+where InvoiceDate >= '2015.01.01'
+order by InvoiceID;
+set statistics time on;
+
+
+select distinct i.InvoiceID,c.CustomerName,i.InvoiceDate,
+	(select sum(ct.TransactionAmount)
+	 from Sales.Invoices i1
+	 join Sales.CustomerTransactions ct on i1.InvoiceID = ct.InvoiceID
+	 where month(i1.InvoiceDate) = month(i.InvoiceDate) and InvoiceDate >= '2015.01.01'
+	 group by month(i1.InvoiceDate)
+	 ) as Progressive_Total
+from Sales.Invoices i
+join Sales.Customers c on i.CustomerID = c.CustomerID
+where InvoiceDate >= '2015.01.01'
+order by InvoiceID;
+
+
+--Оконная функция выполняется быстрее.

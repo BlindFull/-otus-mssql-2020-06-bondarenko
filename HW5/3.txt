@@ -1,0 +1,25 @@
+--Вывести сумму продаж, дату первой продажи и количество проданного по месяцам, по товарам, продажи которых менее 50 ед в месяц.
+--Группировка должна быть по году, месяцу, товару.
+--Вывести:
+--* Год продажи
+--* Месяц продажи
+--* Наименование товара
+--* Сумма продаж
+--* Дата первой продажи
+--* Количество проданного
+
+select datepart(yy,(i.InvoiceDate)) as 'year',
+	   datename(month, i.InvoiceDate) as 'mosnth',
+	   w.StockItemName,
+	   sum(l.UnitPrice) as 'sales amount',
+	   sum(l.Quantity) as 'quantity sold',
+	   min(i.InvoiceDate) as 'first day of sale'
+from Sales.Invoices as i
+join Sales.InvoiceLines as l on i.InvoiceID = l.InvoiceID
+join Warehouse.StockItems as w on l.StockItemID = w.StockItemID
+group by datepart(yy,i.InvoiceDate),
+		 datename(month, i.InvoiceDate),
+		 w.StockItemName
+having sum(l.Quantity) < 50
+order by datepart(yy, i.InvoiceDate),
+		 datename(month, i.InvoiceDate)

@@ -1,0 +1,4 @@
+--Все товары, в названии которых есть "urgent" или название начинается с "Animal". Вывести: ИД товара, наименование товара.
+select StockItemID, StockItemName 
+from Warehouse.StockItems 
+where StockItemName like '%urgent%' or StockItemName like'Animal%'

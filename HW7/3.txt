@@ -1,0 +1,10 @@
+select * from
+	(	
+		select InvoiceDate, StockItemName, Quantity,row_number() over(partition by month(InvoiceDate) order by Quantity desc, InvoiceDate) as quan_num
+		from Sales.Invoices i
+		join Sales.InvoiceLines il on i.InvoiceID = il.InvoiceID
+		join Warehouse.StockItems si on il.StockItemID = si.StockItemID
+		where year(InvoiceDate) = '2016'
+	) as t
+where quan_num <= 2
+order by InvoiceDate

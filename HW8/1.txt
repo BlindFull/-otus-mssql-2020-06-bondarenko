@@ -1,0 +1,10 @@
+select * from(
+			  select substring(c.CustomerName, 16,len(c.CustomerName)-16) as CustomerName, format(i.InvoiceDate,'dd.MM.yyyy') as InvoiceMonth, il.InvoiceID
+			  from Sales.Customers c
+			  join Sales.Invoices i on c.CustomerID = i.CustomerID
+			  join Sales.InvoiceLines il on i.InvoiceID = il.InvoiceID
+		   	  where c.CustomerID between 2 and 6
+			  ) as Customer
+pivot(count(InvoiceID)
+	for CustomerName IN ([Sylvanite, MT], [Peeples Valley, AZ], [Medicine Lodge, KS], [Gasport, NY], [Jessie, ND])) as  PVT
+order by year(PVT.InvoiceMonth), day(PVT.InvoiceMonth), month(PVT.InvoiceMonth)

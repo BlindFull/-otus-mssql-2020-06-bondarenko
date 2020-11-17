@@ -1,0 +1,21 @@
+--Выберите сотрудников (Application.People), которые являются продажниками (IsSalesPerson), и не сделали ни одной продажи 04 июля 2015 года. Вывести ИД сотрудника и его полное имя. Продажи смотреть в таблице Sales.Invoices.
+
+select p.FullName,p.PersonID
+from Application.People as p
+where p.IsSalesPerson = 1 and  not exists
+	 (select i.SalespersonPersonID
+	 from Sales.Invoices as i
+	 where p.PersonID = i.SalespersonPersonID and InvoiceDate = '2015-07-04');
+
+with salesCTE as 
+(select p.FullName, p.PersonID, p.IsSalesPerson
+from Application.People as p
+where  p.IsSalesPerson = 1 
+)		 
+select p.FullName,
+		p.PersonID 		
+from salesCTE as p
+where  not exists
+	 (select i.SalespersonPersonID
+	 from Sales.Invoices as i
+	 where p.PersonID = i.SalespersonPersonID and InvoiceDate = '2015-07-04');

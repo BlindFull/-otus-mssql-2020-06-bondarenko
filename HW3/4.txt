@@ -1,0 +1,15 @@
+--Выберите города (ид и название), в которые были доставлены товары, входящие в тройку самых дорогих товаров, а также имя сотрудника, который осуществлял упаковку заказов (PackedByPersonID).
+
+select c.CityName,
+        c.CityID,
+		p.FullName
+from [Application].[Cities] as c
+join [Application].[People] as p
+on c.LastEditedBy = p.personid
+join [Sales].[Invoices] as i
+on  p.PersonID = i.PackedByPersonID
+where exists(select   top 3 ( StockItemid),
+                              UnitPrice
+	         from [Sales].[InvoiceLines]
+	         Order by UnitPrice desc ) 
+group by c.CityName,  c.CityID,	p.FullName;

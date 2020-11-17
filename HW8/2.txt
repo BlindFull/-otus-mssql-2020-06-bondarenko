@@ -1,0 +1,7 @@
+select * from(
+				select  CustomerName,c.DeliveryAddressLine1,c.DeliveryAddressLine2,c.PostalAddressLine1,c.PostalAddressLine2
+				from Sales.Customers c
+				where CustomerName like 'Tailspin Toys%'
+			  ) as Customer
+unpivot(AddressLine
+for [name] in (DeliveryAddressLine1, DeliveryAddressLine2, PostalAddressLine1, PostalAddressLine2)) as pvt

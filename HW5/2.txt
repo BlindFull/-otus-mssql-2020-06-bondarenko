@@ -1,0 +1,16 @@
+-- Отобразить все месяцы, где общая сумма продаж превысила 10 000
+--Вывести:
+--* Год продажи
+--* Месяц продажи
+--* Общая сумма продаж
+
+select datepart(yy,(i.InvoiceDate)) as 'year',
+	   datename(month, i.InvoiceDate) as 'month',
+	   sum(l.UnitPrice) as 'total sales'
+from Sales.Invoices as i
+join Sales.InvoiceLines as l on i.InvoiceID = l.InvoiceID
+group by datepart(yy, i.InvoiceDate),
+		 datename(month, i.InvoiceDate)
+having sum(l.UnitPrice) > 10000
+order by datepart(yy, i.InvoiceDate),
+		 datename(month, i.InvoiceDate)

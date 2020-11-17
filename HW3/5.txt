@@ -1,0 +1,16 @@
+SELECT Invoices.InvoiceID,Invoices.InvoiceDate,People.FullName AS SalesPersonName, SalesTotals.TotalSumm AS TotalSummByInvoice,
+	(SELECT SUM(OrderLines.PickedQuantity*OrderLines.UnitPrice)
+		FROM Sales.OrderLines
+		INNER HASH JOIN Sales.Orders ON OrderLines.OrderID = Orders.OrderID
+		WHERE Orders.OrderId = Invoices.OrderId and Orders.PickingCompletedWhen IS NOT NULL) AS TotalSummForPickedItems
+FROM Sales.Invoices
+JOIN Application.People ON  People.PersonID = Invoices.SalespersonPersonID
+JOIN (SELECT InvoiceId, SUM(Quantity*UnitPrice) AS TotalSumm
+		FROM Sales.InvoiceLines
+		GROUP BY InvoiceId
+		HAVING SUM(Quantity*UnitPrice) > 27000) AS SalesTotals ON Invoices.InvoiceID = SalesTotals.InvoiceID
+ORDER BY TotalSumm DESC
+
+Выбирает id счёта, дату составления счёта, имя продавца, коформляющим счета.
+Выбирает общую сумму оформленного заказа > 27000, и общую цену товара.
+В порядке убывания общей суммы заказа.

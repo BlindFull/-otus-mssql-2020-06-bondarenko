@@ -1,0 +1,24 @@
+create function customer_sales (@CustomerId int)  
+returns table 
+as
+return   
+(  
+    select c.CustomerName, si.StockItemID, si.StockItemName, SUM(OL.Quantity) AS 'Quantity'  
+    from Warehouse.StockItems as si   
+    join Sales.OrderLines as ol ON ol.StockItemID = si.StockItemID  
+    join Sales.Orders as o ON o.OrderID = ol.OrderID  
+    join Sales.Customers as c ON o.CustomerID = c.CustomerID  
+    where o.CustomerID = @CustomerId  
+    group by c.CustomerName, si.StockItemID, si.StockItemName  
+)
+
+exec ('slect * from dbo.customer_sales (10)')
+with result sets
+(
+	(
+	 [CustomerName] varchar(50),
+	 [StockItemID] int,
+	 [StockItemName] varchar(50),
+	 [Qiantity] int
+	)
+)

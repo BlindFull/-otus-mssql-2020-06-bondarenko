@@ -1,0 +1,9 @@
+insert into Sales.Customers (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent,IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, DeliveryRun, RunPosition, WebsiteURL, DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy)
+values (next value for Sequences.CustomerID, 'John Doe',next value for Sequences.CustomerID,6, 3256,3,3714,3714,4000,'2016-08-22',0,0,0,7,'(092) 555-0100','(092) 555-0101','','','https://www.google.com/','Shop 30','278 Jackson Street','90298','PO Box 7789','Nadaville','90273',1),
+(next value for Sequences.CustomerID, 'Alice Smit',next value for Sequences.CustomerID,4,3240,3,2117,2117,1990,'2016-08-05',0,0,0,7,'(032) 555-0100','(032) 555-0101','','','https://www.google.com/','Shop 22','45  Yashin Street','90607','PO Box 78','Irmaville','90201',1),
+(next value for Sequences.CustomerID, 'Marilyn Manson',next value for Sequences.CustomerID,5,3214,3,1982,1982,2913,'2016-09-15',0,0,0,7,'(123) 555-0100','(123) 555-0101','','','https://www.google.com/','Suite 12','918 Manson Street','90008','PO Box 097','Anupamville','90027',1),
+(next value for Sequences.CustomerID, 'John Smit',next value for Sequences.CustomerID,7,3168,3,2983,2983,1827,'2016-10-03',0,0,0,7,'(123) 555-0100','(123) 555-0101','','','https://www.google.com/','Unit 10','829  Jordan Street','90309','PO Box 796','Baalaamjaliville','90056',1),
+(next value for Sequences.CustomerID, 'Alice Doe',next value for Sequences.CustomerID,6,3138,3,1827,1827,1928,'2016-11-01',0,0,0,7,'(324) 555-0100','(123) 555-0101','','','https://www.google.com/','Shop 14','15  Bruno Street','90012','PO Box 751','Selmaville','90922',1)
+
+
+

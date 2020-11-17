@@ -1,0 +1,10 @@
+*Загрузить данные из файла StockItems.xml в таблицу Warehouse.StockItems.
+
+DECLARE @x XML
+SET @x = ( 
+  SELECT * FROM OPENROWSET
+  (BULK 'C:\Users\user\Desktop\StockItems.xml',
+   SINGLE_BLOB)
+   as d)
+
+select @x

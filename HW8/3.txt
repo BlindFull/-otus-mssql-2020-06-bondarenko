@@ -1,0 +1,6 @@
+select * from(
+				select CountryID,CountryName,IsoAlpha3Code
+				,(select cast(IsoNumericCode as nvarchar(3)) from Application.Countries co where co.CountryID = c.CountryID) as IsoNumericCodes
+	from Application.Countries c
+	) as Country
+UNPIVOT (Code for [name] IN (IsoAlpha3Code,IsoNumericCodes)) as unpvt

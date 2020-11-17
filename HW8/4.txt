@@ -1,0 +1,9 @@
+select c.CustomerID,c.CustomerName, i.StockItemName, i.UnitPrice,i.InvoiceDate
+from Sales.Customers c
+cross apply (select top 2 si.StockItemName,si.StockItemID, si.UnitPrice, i.InvoiceDate
+			 from Sales.Invoices i
+			 join Sales.InvoiceLines il on i.InvoiceID = il.InvoiceID
+			 join Warehouse.StockItems si on  il.StockItemID = si.StockItemID
+			 where il.StockItemID = si.StockItemID and i.CustomerID = c.CustomerID
+			 order by si.UnitPrice desc) as i
+order by CustomerID, i.InvoiceDate

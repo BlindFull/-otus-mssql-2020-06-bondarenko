@@ -1,0 +1,13 @@
+Заказы поставщикам (Purchasing.Suppliers), которые были исполнены в январе 2014 года с доставкой Air Freight или Refrigerated Air Freight (DeliveryMethodName).
+--Вывести:
+--* способ доставки (DeliveryMethodName)
+--* дата доставки
+--* имя поставщика
+--* имя контактного лица принимавшего заказ (ContactPerson)
+
+select DeliveryMethodName,convert(varchar, OrderDate, 104), SupplierName, FullName
+from Purchasing.PurchaseOrders p 
+join Application.DeliveryMethods d on p.DeliveryMethodID = d.DeliveryMethodID
+join Purchasing.Suppliers s on p.SupplierID = s.SupplierID
+join Application.People pl on p.ContactPersonID = pl.PersonID
+where (OrderDate between '01.01.2014' and '31.01.2014') and (DeliveryMethodName = 'Air Freight' or DeliveryMethodName = 'Refrigerated Air Freight')

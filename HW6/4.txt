@@ -1,0 +1,41 @@
+merge Sales.Customers as target
+using (select CustomerID, CustomerName, BillToCustomerID, cc.CustomerCategoryID, PrimaryContactPersonID, dm.DeliveryMethodID, DeliveryCityID, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent,IsOnCreditHold, PaymentDays, p.PhoneNumber, p.FaxNumber, DeliveryRun, RunPosition, WebsiteURL, DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, p.LastEditedBy
+		from Sales.Customers c
+		join Application.People p ON c.AlternateContactPersonID = p.PersonID and c.PrimaryContactPersonID = p.PersonID
+		join Sales.BuyingGroups b ON c.BuyingGroupID = b.BuyingGroupID
+		join Sales.CustomerCategories cc ON c.CustomerCategoryID = cc.CustomerCategoryID
+		join Application.Cities ac ON c.DeliveryCityID = ac.CityID and c.PostalCityID = ac.CityID
+		join Application.DeliveryMethods dm ON c.DeliveryMethodID = dm.DeliveryMethodID)
+		as source(CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent,IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, DeliveryRun, RunPosition, WebsiteURL, DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy)
+		on (target.CustomerID = source.CustomerID)
+		when matched
+			then update set CustomerID = source.CustomerID,
+				CustomerName = source.CustomerName,
+				BillToCustomerID = source.BillToCustomerID,
+				CustomerCategoryID = source.CustomerCategoryID,
+				PrimaryContactPersonID = source.PrimaryContactPersonID,
+				DeliveryMethodID = source.DeliveryMethodID,
+				DeliveryCityID = source.DeliveryCityID,
+				PostalCityID = source.PostalCityID,
+				CreditLimit = source.CreditLimit,
+				AccountOpenedDate = source.AccountOpenedDate,
+				StandardDiscountPercentage = source.StandardDiscountPercentage,
+				IsStatementSent = source.IsStatementSent,
+				IsOnCreditHold = source.IsOnCreditHold,
+				PaymentDays = source.PaymentDays,
+				PhoneNumber = source.PhoneNumber,
+				FaxNumber = source.FaxNumber,
+				DeliveryRun = source.DeliveryRun,
+				RunPosition = source.RunPosition,
+				WebsiteURL = source.WebsiteURL,
+				DeliveryAddressLine1 = source.DeliveryAddressLine1,
+				DeliveryAddressLine2 = source.DeliveryAddressLine2,
+				DeliveryPostalCode = source.DeliveryPostalCode,
+				PostalAddressLine1 = source.PostalAddressLine1,
+				PostalAddressLine2 = source.PostalAddressLine2,
+				PostalPostalCode = source.PostalPostalCode,
+				LastEditedBy = source.LastEditedBy
+		when not matched
+			then insert(CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent,IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, DeliveryRun, RunPosition, WebsiteURL, DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy)
+			values (source.CustomerID, source.CustomerName, source.BillToCustomerID, source.CustomerCategoryID, source.PrimaryContactPersonID, source.DeliveryMethodID, source.DeliveryCityID, source.PostalCityID, source.CreditLimit, source.AccountOpenedDate, source.StandardDiscountPercentage, source.IsStatementSent,source.IsOnCreditHold, source.PaymentDays, source.PhoneNumber, source.FaxNumber, source.DeliveryRun, source.RunPosition, source.WebsiteURL, source.DeliveryAddressLine1, source.DeliveryAddressLine2, source.DeliveryPostalCode, source.PostalAddressLine1, source.PostalAddressLine2, source.PostalPostalCode, source.LastEditedBy)
+		output deleted.*,$action,inserted.*;

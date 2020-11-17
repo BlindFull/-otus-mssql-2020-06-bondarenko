@@ -1,0 +1,3 @@
+update Sales.Customers
+set PostalAddressLine1 = 'BC street 14'
+where CustomerName = 'Alice Doe'

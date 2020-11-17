@@ -1,0 +1,41 @@
+drop table if exists #temp
+; with cte as(
+	select distinct i.InvoiceID,
+	c.CustomerName,
+	i.InvoiceDate,
+	(select sum(ct.TransactionAmount)
+	from Sales.Invoices i1
+	join Sales.CustomerTransactions ct on i1.InvoiceID = ct.InvoiceID
+	where month(i1.InvoiceDate) = month(i.InvoiceDate) and InvoiceDate >= '2015.01.01'
+	group by month(i1.InvoiceDate)) as Progressive_Total
+from Sales.Invoices i
+join Sales.Customers c ON i.CustomerID = c.CustomerID
+where InvoiceDate >= '2015.01.01'
+)
+select * into #temp from cte
+select * from #temp order by InvoiceID 
+
+
+declare @t table
+(
+	InvoiceID int not null,
+	CustomerName nvarchar(100) not null,
+	InvoiceDate date not null,
+	Progressive_Total float not null
+)
+; with cte as(
+select distinct i.InvoiceID,
+	c.CustomerName,
+	i.InvoiceDate,
+	(select sum(ct.TransactionAmount)
+	from Sales.Invoices i1
+	join Sales.CustomerTransactions ct on i1.InvoiceID = ct.InvoiceID
+	where month(i1.InvoiceDate) = month(i.InvoiceDate) and InvoiceDate >= '2015.01.01'
+	group by month(i1.InvoiceDate)
+	) as Progressive_Total
+from Sales.Invoices i
+join Sales.Customers c on i.CustomerID = c.CustomerID
+where InvoiceDate >= '2015.01.01'
+)
+insert into @t select * from cte
+select * from @t order by InvoiceID

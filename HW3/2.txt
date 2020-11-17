@@ -1,0 +1,20 @@
+--Выберите товары с минимальной ценой (подзапросом). Сделайте два варианта подзапроса. Вывести: ИД товара, наименование товара, цена
+
+select StockItemID,
+	   StockItemName,
+		UnitPrice
+from Warehouse.StockItems
+where UnitPrice <= all ( select UnitPrice  from Warehouse.StockItems);
+
+with MinPricecte as
+(select StockItemID,
+		StockItemName,
+		UnitPrice
+from Warehouse.StockItems
+where UnitPrice <= all ( select UnitPrice  from Warehouse.StockItems))
+select  s.StockItemID,
+		s.StockItemName,
+		s.UnitPrice
+from Warehouse.StockItems as s
+join MinPricecte as m
+on s.StockItemID = m.StockItemID

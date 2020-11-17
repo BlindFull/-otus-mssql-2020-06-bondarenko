@@ -1,0 +1,10 @@
+select * from 
+			(
+				select o.SalespersonPersonID,p.FullName as SalesPersonName,o.CustomerID,c.CustomerName as CustomerName,o.OrderDate,ol.Quantity*ol.UnitPrice as Total,row_number() over (partition by o.SalespersonPersonID order by o.OrderDate desc
+			) as lastsales
+from Sales.Orders as o
+join Sales.OrderLines as ol on o.OrderID=ol.OrderID
+join Application.People as p on o.SalespersonPersonID=p.PersonID
+join Sales.Customers as c on c.CustomerID=o.CustomerID
+) as t
+where t.lastsales = 1;

@@ -1,0 +1,2 @@
+delete from Sales.Customers
+where CustomerName = 'John Doe'

@@ -1,0 +1,10 @@
+select * from
+			(
+				select i.CustomerID, c.CustomerName, si.StockItemName,si.UnitPrice, i.InvoiceDate, 
+					 row_number() over(partition by i.CustomerID order by si.UnitPrice desc) as num
+				from Sales.InvoiceLines il
+				join Sales.Invoices i on  il.InvoiceID = i.InvoiceID
+				join Sales.Customers c on i.CustomerID = c.CustomerID
+				join Warehouse.StockItems si on il.StockItemID = si.StockItemID
+			) as tab
+where num <= 2

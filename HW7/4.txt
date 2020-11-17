@@ -1,0 +1,10 @@
+select StockItemID, StockItemName, Brand, UnitPrice,
+	row_number() over(partition by left(StockItemName,1) order by StockItemName) as numb,
+	count(StockItemName) over() as total_num,
+	count(StockItemName) over(partition by left(StockItemName,1)) as total_num_name,
+	lead(StockItemID) over(order by StockItemName) as [lead],
+	lag(StockItemID) over(order by StockItemName) as [lag],
+	lag(StockItemName,2,'No items') over(order by StockItemName) as lag_two,
+	ntile(30) over(order by TypicalWeightPerUnit) as [group]
+from Warehouse.StockItems
+order by StockItemName

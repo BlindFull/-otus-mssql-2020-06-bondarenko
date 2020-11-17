@@ -1,0 +1,8 @@
+-- Все ид и имена клиентов и их контактные телефоны, которые покупали товар Chocolate frogs 250g. Имя товара смотреть в Warehouse.StockItems.
+
+select c.customerid,  CustomerName, phonenumber
+from sales.customers c
+join sales.orders o on c.customerID = o.customerID
+join  sales.orderlines o1 on o1.orderID = o.orderID
+join Warehouse.StockItems s on s.stockitemid = o1.stockitemid
+where stockitemname = 'Chocolate frogs 250g'

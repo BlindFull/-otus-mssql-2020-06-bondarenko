@@ -1,0 +1,10 @@
+select distinct top 10 I.CustomerID, C.CustomerName
+from Sales.Invoices I
+join Sales.Customers C on I.CustomerID = C.CustomerID
+where 30 < (select count(OrderID)
+			from Sales.Invoices i
+			where I.InvoiceID = i.InvoiceID) 
+and (select top 1 InvoiceDate
+		from Sales.Invoices inv
+		where inv.CustomerID = I.CustomerID
+		order by InvoiceDate desc) >= '2016-04-01'

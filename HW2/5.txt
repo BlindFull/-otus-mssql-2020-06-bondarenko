@@ -1,0 +1,7 @@
+--Десять последних продаж (по дате) с именем клиента и именем сотрудника, который оформил заказ (SalespersonPerson).
+
+select top 10 orderdate, fullname, CustomerName
+from  sales.orders as o
+join Application.People as a on a.personid = o.SalespersonPersonid
+join sales.customers as c on c.customerid = o.customerid 
+order by orderdate desc

@@ -1,0 +1,48 @@
+use WideWorldImporters;
+
+exec sp_configure 'show advanced options', 1;
+go
+reconfigure;
+go
+
+exec sp_configure 'clr enabled', 1;
+exec sp_configure 'clr strict security', 0 
+go
+
+reconfigure;
+go
+
+
+alter database WideWorldImporters set trustworthy on; 
+
+--USE WideWorldImporters
+--EXEC sp_changedbowner 'sa'
+
+
+create assembly test
+from 'C:\Users\user\Desktop\CLR.dll'
+with permission_set = safe;  
+
+-- DROP ASSEMBLY SimpleDemoAssembly
+
+
+create function dbo.fn_sm(@Num1 int, @Num2 int)  
+returns int
+as external name [test].[CLR_course.Class1].SumFunction;
+go 
+
+
+
+select 
+   dbo.fn_sm(9,1), 
+   dbo.fn_sm(1,2)
+
+create procedure dbo.name
+(  
+    @Name nvarchar(50)
+)  
+AS EXTERNAL NAME  [test].[CLR_course.Class1].NameProcedure;  
+GO 
+
+exec dbo.name @Name = 'Vlad';
+

@@ -1,0 +1,6 @@
+C:\CLR_Demo\CLR_course\CLR_course\bin\Debug\CLR_course.dll
+C:\CLR_Demo\CLR_course\CLR_course\bin\Debug\CLR_course.pdb
+C:\CLR_Demo\CLR_course\CLR_course\obj\Debug\CLR_course.csprojAssemblyReference.cache
+C:\CLR_Demo\CLR_course\CLR_course\obj\Debug\CLR_course.csproj.CoreCompileInputs.cache
+C:\CLR_Demo\CLR_course\CLR_course\obj\Debug\CLR_course.dll
+C:\CLR_Demo\CLR_course\CLR_course\obj\Debug\CLR_course.pdb
